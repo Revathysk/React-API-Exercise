@@ -3,33 +3,46 @@ import React, { Component } from 'react';
 
 class Score extends Component {
   state = {
-    score:0 
+    score: 0
   }
 
-  handleScore = (number) =>{
-    //event.preventDefault()
+  incrementScore = () => {
+    console.log('increment');
+    this.setState({ score: this.state.score + 1 });
+  }
 
-    var currentScore = this.state.score
-    console.log("inside handlescore", number)
-     
-     switch(number) {
-     case 1 : currentScore =+1; console.log(currentScore); break;
-     case 2 : currentScore =-1; console.log(currentScore); break; 
-     case 3 : currentScore= 0;  console.log(currentScore); break;  
-     default: console.log("Error occurred processing Scores");
-    }
+  decreaseScore = () => {
+    console.log('decrement');
+    this.setState({ score: this.state.score - 1 });
+  }
   
-    this.setState({ score: currentScore })
+  resetScore = () => {
+    console.log('reset');
+    this.setState({score: 0 })
   }
+  // handleScore = (number) =>{
+      //event.preventDefault()
+    // let currentScore = this.state.score
+    // console.log("inside handlescore", this.state.score)
+     
+    //  switch(number) {
+    //  case 1 : currentScore =+1; console.log(currentScore); break;
+    //  case 2 : currentScore =-1; console.log(currentScore); break; 
+    //  case 3 : currentScore= 0;  console.log(currentScore); break;  
+    //  default: console.log("Error occurred processing Scores");
+    // }
+
+    // this.setState({ score: currentScore })
+  // }
  
 render() {
    
       return (
-      <div class='score' >
+      <div className='score' >
         <h2> SCORE: {this.state.score} </h2> 
-        <button onClick={()=> {this.handleScore(1)}}> Increase</button> 
-        <button onClick={()=> {this.handleScore(2)}}> Decrease</button>
-        <button onClick={()=> {this.handleScore(3)}}> Reset </button>
+        <button onClick={()=> {this.incrementScore()}}> Increase</button> 
+        <button onClick={()=> {this.decreaseScore()}}> Decrease</button>
+        <button onClick={()=> {this.resetScore()}}> Reset </button>
      </div>      
     );
   }
@@ -38,7 +51,7 @@ render() {
 class App extends Component {
   state={
     baseURL: 'http://jservice.io/api/random',
-    score:0,
+    // score:0,
     dataFetch:[]
   }
 // handleChange =(event) =>
@@ -69,21 +82,22 @@ render() {
       
       <h1>Welcome to Jeopardy</h1>
       <h2> Let's Play </h2>
-      <button onClick = {this.handleFetch}>  Get Question </button>
+      <button onClick = {this.handleFetch}> Get Question </button>
 
-      <Score />      
+      <Score/>      
       
       <div>
-        {this.state.dataFetch.map((trivia) => { 
+        {this.state.dataFetch.map((trivia,i) => { 
           return(
-            <div id="quiz">
+            <div key={trivia.id} id="quiz">
               <div> 
-                <h2> Question : {this.state.dataFetch[0].question}  </h2>
-                <h4> Category : {this.state.dataFetch[0].category_id} </h4>
-                <h4> Points   : {this.state.dataFetch[0].value} </h4>            
+                
+                <h2 id='question'> Question : {trivia.question}  </h2>
+                <h3> Category : {trivia.category.title} </h3>
+                <h3> Points   : {trivia.value} </h3>            
               </div>
 
-              <div class='hide' id='answer'>
+              <div className='hide' id='answer'>
                 <h2> Answer  : {this.state.dataFetch[0].answer}  </h2>
                </div>
             </div>
